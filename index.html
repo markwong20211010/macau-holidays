@@ -13,6 +13,9 @@
     --f-bg:#fdecec; --f-ink:#b8342a;
     --c-bg:#eaf2fb; --c-ink:#2c6fb0;
     --t-bg:#fdf6e3; --t-ink:#9a7410;
+    --x-bg:#f3eefc; --x-ink:#7a4fb5;
+    --v-bg:#e8f6ef; --v-ink:#2e8b63;
+    --l-bg:#fff1e6; --l-ink:#c9722a;
     --head-bg:#eceff3;
     --radius:10px;
   }
@@ -24,12 +27,32 @@
     padding:24px 18px 48px;
   }
   .wrap{max-width:1180px;margin:0 auto}
+  body.locked .wrap{display:none}
+
+  /* ===== 登入門 ===== */
+  #gate{
+    position:fixed;inset:0;background:var(--bg);display:none;
+    align-items:center;justify-content:center;padding:20px;z-index:100;
+  }
+  body.locked #gate{display:flex}
+  .gate-card{
+    background:#fff;border:1px solid var(--line-soft);border-radius:14px;
+    max-width:360px;width:100%;padding:28px 26px;box-shadow:0 12px 40px rgba(20,30,50,.15);
+  }
+  .gate-card h2{font-size:18px;margin-bottom:6px}
+  .gate-card p{font-size:13px;color:var(--ink-2);margin-bottom:18px;line-height:1.6}
+  .gate-card input{
+    width:100%;padding:11px 12px;border:1px solid var(--line);border-radius:9px;
+    font-size:15px;font-family:inherit;margin-bottom:12px;
+  }
+  .gate-card button{
+    width:100%;padding:11px;border:0;border-radius:9px;background:var(--c-ink);
+    color:#fff;font-size:14.5px;cursor:pointer;font-family:inherit;
+  }
+  .gate-err{color:var(--f-ink);font-size:12.5px;margin-top:10px;min-height:18px}
 
   /* ===== 頂部欄 ===== */
-  header.top{
-    display:flex;flex-wrap:wrap;align-items:center;gap:14px;
-    margin-bottom:18px;
-  }
+  header.top{display:flex;flex-wrap:wrap;align-items:center;gap:14px;margin-bottom:18px}
   .title-block{flex:1 1 280px;min-width:0}
   .title-block h1{font-size:22px;font-weight:700;letter-spacing:.5px}
   .title-block p{font-size:13px;color:var(--ink-2);margin-top:4px}
@@ -38,41 +61,48 @@
   .title-block .src a:hover{text-decoration:underline}
 
   .controls{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
-  .seg{
-    display:inline-flex;background:var(--card);border:1px solid var(--line);
-    border-radius:9px;padding:3px;gap:2px;
-  }
-  .seg button{
-    border:0;background:transparent;padding:7px 14px;border-radius:7px;
-    font-size:13.5px;color:var(--ink-2);cursor:pointer;font-family:inherit;
-  }
+  .seg{display:inline-flex;background:var(--card);border:1px solid var(--line);border-radius:9px;padding:3px;gap:2px}
+  .seg button{border:0;background:transparent;padding:7px 14px;border-radius:7px;font-size:13.5px;color:var(--ink-2);cursor:pointer;font-family:inherit}
   .seg button.active{background:var(--c-ink);color:#fff;font-weight:600}
-  select.year-select{
-    border:1px solid var(--line);background:var(--card);border-radius:9px;
-    padding:8px 12px;font-size:14px;color:var(--ink);font-family:inherit;cursor:pointer;
-  }
+  select.year-select{border:1px solid var(--line);background:var(--card);border-radius:9px;padding:8px 12px;font-size:14px;color:var(--ink);font-family:inherit;cursor:pointer}
 
   /* ===== 卡片 ===== */
-  .card{
-    background:var(--card);border:1px solid var(--line-soft);border-radius:var(--radius);
-    padding:18px;box-shadow:0 1px 3px rgba(20,30,50,.06);
+  .card{background:var(--card);border:1px solid var(--line-soft);border-radius:var(--radius);padding:18px;box-shadow:0 1px 3px rgba(20,30,50,.06);margin-bottom:18px}
+  .card h2.sec-title{font-size:15px;margin-bottom:14px;color:var(--ink)}
+
+  /* ===== 休假表單 ===== */
+  .leave-form{display:flex;flex-wrap:wrap;gap:12px 16px;align-items:flex-end}
+  .field{display:flex;flex-direction:column;gap:5px}
+  .field label{font-size:12px;color:var(--ink-3)}
+  .field input,.field select,.field textarea{
+    border:1px solid var(--line);border-radius:8px;padding:8px 10px;font-size:14px;
+    font-family:inherit;background:#fff;color:var(--ink);min-width:0;
   }
+  .field textarea{width:180px}
+  .leave-form .btn-add{
+    padding:9px 18px;border:0;border-radius:8px;background:var(--x-ink);color:#fff;
+    font-size:14px;cursor:pointer;font-family:inherit;
+  }
+  .leave-list{margin-top:16px;display:flex;flex-direction:column;gap:8px}
+  .leave-row{
+    display:flex;flex-wrap:wrap;gap:8px 14px;align-items:center;
+    border:1px solid var(--line-soft);border-radius:9px;padding:10px 12px;background:#fafbfc;
+  }
+  .leave-row .lr-date{font-weight:600;font-size:13.5px;min-width:150px}
+  .leave-row .lr-note{flex:1;min-width:120px;font-size:13px;color:var(--ink-2)}
+  .leave-row .lr-del{
+    border:1px solid var(--line);background:#fff;border-radius:7px;padding:5px 11px;
+    font-size:12.5px;color:var(--f-ink);cursor:pointer;font-family:inherit;
+  }
+  .leave-empty{font-size:13px;color:var(--ink-3);padding:6px 0}
 
   /* ===== Mode1 網格 ===== */
   .grid-scroll{overflow-x:auto}
   table.grid{border-collapse:collapse;width:100%;table-layout:fixed;min-width:920px}
-  table.grid th,table.grid td{
-    border:1px solid var(--line-soft);text-align:center;vertical-align:middle;
-    font-size:13px;height:38px;
-  }
-  table.grid thead th{
-    background:var(--head-bg);color:var(--ink-2);font-weight:600;font-size:12.5px;
-  }
+  table.grid th,table.grid td{border:1px solid var(--line-soft);text-align:center;vertical-align:middle;font-size:13px;height:38px}
+  table.grid thead th{background:var(--head-bg);color:var(--ink-2);font-weight:600;font-size:12.5px}
   table.grid thead th.month-corner{width:96px}
-  table.grid td.month-label{
-    background:var(--head-bg);font-weight:600;color:var(--ink);
-    text-align:left;padding-left:10px;font-size:13px;white-space:nowrap;
-  }
+  table.grid td.month-label{background:var(--head-bg);font-weight:600;color:var(--ink);text-align:left;padding-left:10px;font-size:13px;white-space:nowrap}
   table.grid td.month-label .pt{color:var(--ink-3);font-weight:400;font-size:11.5px;margin-left:5px}
   table.grid td.cell{cursor:default;position:relative;padding:0}
   table.grid td.cell.clickable{cursor:pointer}
@@ -84,69 +114,57 @@
   td.cell.f{background:var(--f-bg);color:var(--f-ink)}
   td.cell.c{background:var(--c-bg);color:var(--c-ink)}
   td.cell.t{background:var(--t-bg);color:var(--t-ink)}
+  td.cell.x{background:var(--x-bg);color:var(--x-ink)}
+  td.cell.v{background:var(--v-bg);color:var(--v-ink)}
+  td.cell.l{background:var(--l-bg);color:var(--l-ink)}
   td.cell.empty{background:#fafbfc;color:transparent}
+  .notice-bar{padding:14px;font-size:13.5px;color:var(--ink-2);background:#fafbfc;border:1px dashed var(--line);border-radius:9px;margin-bottom:12px}
 
   /* 圖例 */
-  .legend{
-    display:flex;flex-wrap:wrap;gap:10px 22px;margin-top:16px;
-    padding:14px 16px;background:#fafbfc;border:1px dashed var(--line);border-radius:var(--radius);
-    font-size:13px;color:var(--ink-2);
-  }
+  .legend{display:flex;flex-wrap:wrap;gap:10px 22px;margin-top:16px;padding:14px 16px;background:#fafbfc;border:1px dashed var(--line);border-radius:var(--radius);font-size:13px;color:var(--ink-2)}
   .legend .group{display:flex;flex-wrap:wrap;gap:10px 18px}
   .legend .item{display:inline-flex;align-items:center;gap:7px}
-  .legend .sym{
-    display:inline-flex;align-items:center;justify-content:center;
-    width:24px;height:24px;border:1px solid var(--line);border-radius:5px;
-    font-weight:700;font-size:12.5px;background:#fff;
-  }
+  .legend .sym{display:inline-flex;align-items:center;justify-content:center;width:24px;height:24px;border:1px solid var(--line);border-radius:5px;font-weight:700;font-size:12.5px;background:#fff}
   .legend .sym.s{background:var(--weekend-bg);color:var(--weekend-ink)}
   .legend .sym.d{background:var(--weekend-bg);color:var(--weekend-ink)}
   .legend .sym.f{background:var(--f-bg);color:var(--f-ink)}
   .legend .sym.c{background:var(--c-bg);color:var(--c-ink)}
   .legend .sym.t{background:var(--t-bg);color:var(--t-ink)}
+  .legend .sym.x{background:var(--x-bg);color:var(--x-ink)}
+  .legend .sym.v{background:var(--v-bg);color:var(--v-ink)}
+  .legend .sym.l{background:var(--l-bg);color:var(--l-ink)}
   .legend .note{width:100%;font-size:12px;color:var(--ink-3)}
 
   /* ===== Mode2 清單 ===== */
   table.list{border-collapse:collapse;width:100%;table-layout:fixed}
   table.list col.col-date{width:34%}
   table.list col.col-desc{width:66%}
-  table.list th,table.list td{
-    border-bottom:1px solid var(--line-soft);padding:12px 14px;text-align:left;font-size:14px;
-  }
+  table.list th,table.list td{border-bottom:1px solid var(--line-soft);padding:12px 14px;text-align:left;font-size:14px}
   table.list thead th{background:var(--head-bg);color:var(--ink-2);font-weight:600;font-size:12.5px}
   table.list tbody tr:hover{background:#f7f9fc}
   table.list td .date-main{font-weight:600}
   table.list td .date-sub{font-size:12px;color:var(--ink-3);margin-top:2px}
-  .badge{
-    display:inline-block;padding:2px 9px;border-radius:11px;font-size:11.5px;font-weight:600;
-    margin-right:8px;white-space:nowrap;
-  }
+  .badge{display:inline-block;padding:2px 9px;border-radius:11px;font-size:11.5px;font-weight:600;margin-right:8px;white-space:nowrap}
   .badge.f{background:var(--f-bg);color:var(--f-ink)}
   .badge.c{background:var(--c-bg);color:var(--c-ink)}
   .badge.t{background:var(--t-bg);color:var(--t-ink)}
-  .badge.mand{background:#efece6;color:#7a6a3f;font-weight:500}
+  .badge.x{background:var(--x-bg);color:var(--x-ink)}
+  .badge.v{background:var(--v-bg);color:var(--v-ink)}
+  .badge.l{background:var(--l-bg);color:var(--l-ink)}
   .desc-name{color:var(--ink)}
   .desc-meta{font-size:12px;color:var(--ink-3);margin-top:3px}
 
   /* ===== 彈窗 ===== */
-  .modal-mask{
-    position:fixed;inset:0;background:rgba(20,30,50,.42);display:none;
-    align-items:center;justify-content:center;padding:20px;z-index:50;
-  }
+  .modal-mask{position:fixed;inset:0;background:rgba(20,30,50,.42);display:none;align-items:center;justify-content:center;padding:20px;z-index:50}
   .modal-mask.show{display:flex}
-  .modal{
-    background:#fff;border-radius:14px;max-width:420px;width:100%;padding:22px 24px;
-    box-shadow:0 12px 40px rgba(20,30,50,.25);
-  }
+  .modal{background:#fff;border-radius:14px;max-width:440px;width:100%;padding:22px 24px;box-shadow:0 12px 40px rgba(20,30,50,.25)}
   .modal h3{font-size:17px;margin-bottom:6px}
   .modal .m-date{font-size:13px;color:var(--ink-3);margin-bottom:14px}
   .modal .m-row{display:flex;gap:10px;font-size:14px;padding:8px 0;border-top:1px solid var(--line-soft)}
   .modal .m-row .k{width:72px;color:var(--ink-3);flex:none}
   .modal .m-row .v{flex:1;min-width:0}
-  .modal .m-close{
-    margin-top:16px;width:100%;padding:10px;border:0;border-radius:9px;
-    background:var(--c-ink);color:#fff;font-size:14px;cursor:pointer;font-family:inherit;
-  }
+  .modal .m-row .lr-del{margin-left:8px;border:1px solid var(--line);background:#fff;border-radius:7px;padding:3px 10px;font-size:12px;color:var(--f-ink);cursor:pointer;font-family:inherit}
+  .modal .m-close{margin-top:16px;width:100%;padding:10px;border:0;border-radius:9px;background:var(--c-ink);color:#fff;font-size:14px;cursor:pointer;font-family:inherit}
 
   footer.foot{margin-top:20px;font-size:12px;color:var(--ink-3);line-height:1.7}
   footer.foot a{color:var(--c-ink);text-decoration:none}
@@ -155,23 +173,33 @@
     body{padding:14px 10px 36px}
     .title-block h1{font-size:18px}
     .card{padding:12px}
+    .field textarea{width:100%}
   }
 </style>
 </head>
-<body>
+<body class="locked">
+
+<!-- ===== 登入門 ===== -->
+<div id="gate">
+  <div class="gate-card">
+    <h2>私人記事本</h2>
+    <p>此頁含個人休假記錄，請輸入驗證碼進入。</p>
+    <input type="password" id="gatePwd" placeholder="請輸入驗證碼" autocomplete="off">
+    <button id="gateBtn" type="button">進入</button>
+    <div class="gate-err" id="gateErr"></div>
+  </div>
+</div>
+
 <div class="wrap">
 
   <header class="top">
     <div class="title-block">
       <h1>澳門特別行政區 · 公眾假期一覽</h1>
-      <p>公眾假期、補假日及豁免上班日期</p>
+      <p>公眾假期、補假日、豁免上班日期及個人休假登記</p>
       <p class="src">資料來源：<a id="srcLink" href="https://www.gov.mo/zh-hant/public-holidays/year-2026/" target="_blank" rel="noopener">澳門特別行政區政府入口網站</a></p>
     </div>
     <div class="controls">
-      <select class="year-select" id="yearSelect" aria-label="年份">
-        <option value="2026">2026 年</option>
-        <option value="2027">2027 年</option>
-      </select>
+      <select class="year-select" id="yearSelect" aria-label="年份"></select>
       <div class="seg" role="tablist" aria-label="顯示模式">
         <button id="modeGrid" class="active" type="button">模式一 · 月曆網格</button>
         <button id="modeList" type="button">模式二 · 日期清單</button>
@@ -179,25 +207,59 @@
     </div>
   </header>
 
+  <!-- ===== 個人休假登記 ===== -->
+  <section class="card" id="leavePanel">
+    <h2 class="sec-title">我的休假登記</h2>
+    <form class="leave-form" id="leaveForm">
+      <div class="field">
+        <label for="leaveStart">開始日期</label>
+        <input type="date" id="leaveStart" required>
+      </div>
+      <div class="field">
+        <label for="leaveEnd">結束日期</label>
+        <input type="date" id="leaveEnd" required>
+      </div>
+      <div class="field">
+        <label for="leaveType">類型（預設年假）</label>
+        <select id="leaveType">
+          <option value="x" selected>X · 年假</option>
+          <option value="v">V · 十日假</option>
+          <option value="l">L · 特別假</option>
+        </select>
+      </div>
+      <div class="field">
+        <label for="leaveNote">備註（可選）</label>
+        <input type="text" id="leaveNote" placeholder="例如：回鄉、旅行">
+      </div>
+      <button class="btn-add" type="submit">登記休假</button>
+    </form>
+    <div class="leave-list" id="leaveList"></div>
+  </section>
+
   <!-- ===== Mode1：月曆網格 ===== -->
   <section id="viewGrid" class="card">
+    <div id="gridNotice"></div>
     <div class="grid-scroll">
       <table class="grid" id="gridTable" aria-label="月曆網格"></table>
     </div>
     <div class="legend">
       <div class="group">
         <span class="item"><span class="sym f">F</span>公眾假期 <span style="color:var(--ink-3)">Feriados</span></span>
-        <span class="item"><span class="sym c">C</span>補假日 <span style="color:var(--ink-3)">Dias de descanso compensatório</span></span>
-        <span class="item"><span class="sym t">T</span>豁免上班 <span style="color:var(--ink-3)">Tolerâncias de ponto</span></span>
-        <span class="item"><span class="sym s">S</span>星期六 <span style="color:var(--ink-3)">Sábado</span></span>
-        <span class="item"><span class="sym d">D</span>星期日 <span style="color:var(--ink-3)">Domingo</span></span>
+        <span class="item"><span class="sym c">C</span>補假日 <span style="color:var(--ink-3)">Compensatório</span></span>
+        <span class="item"><span class="sym t">T</span>豁免上班 <span style="color:var(--ink-3)">Tolerâncias</span></span>
+        <span class="item"><span class="sym x">X</span>年假 <span style="color:var(--ink-3)">Férias</span></span>
+        <span class="item"><span class="sym v">V</span>十日假 <span style="color:var(--ink-3)">10 dias</span></span>
+        <span class="item"><span class="sym l">L</span>特別假 <span style="color:var(--ink-3)">Licença</span></span>
+        <span class="item"><span class="sym s">S</span>星期六</span>
+        <span class="item"><span class="sym d">D</span>星期日</span>
       </div>
-      <div class="note">標有 <strong>*</strong> 號者，按照第 7/2008 號法律第四十四條之規定屬強制性假日；T 標註「下午」者為當日下午獲豁免上班。點擊有標記的日期可查看假期詳情。</div>
+      <div class="note">標有 <strong>*</strong> 號者為強制性假日；個人休假記錄僅存於本機瀏覽器。點擊有標記的日期可查看詳情或刪除記錄。</div>
     </div>
   </section>
 
   <!-- ===== Mode2：日期清單 ===== -->
   <section id="viewList" class="card" style="display:none">
+    <div id="listNotice"></div>
     <table class="list">
       <colgroup><col class="col-date"><col class="col-desc"></colgroup>
       <thead><tr><th>日期 Data</th><th>假期資訊 Descrição</th></tr></thead>
@@ -206,8 +268,8 @@
   </section>
 
   <footer class="foot">
-    年份頁面規則：gov.mo/zh-hant/public-holidays/year-YYYY/ （今年為 year-2026，下一年為 year-2027）。<br>
-    公眾假期依第 60/2000 號行政命令訂定；補假日依《澳門公共行政工作人員通則》第七十九條第四款訂定；豁免上班日期由行政長官批示核准。
+    年份頁面規則：gov.mo/zh-hant/public-holidays/year-YYYY/。公眾假期依第 60/2000 號行政命令訂定；補假日依《澳門公共行政工作人員通則》第七十九條第四款訂定。<br>
+    私隱說明：本頁為純前端頁面，個人休假記錄儲存於本機瀏覽器 localStorage，不會上傳伺服器；登入驗證碼僅作前端遮擋，公開原始碼下可被技術性繞過，請勿記載高度敏感內容。
   </footer>
 </div>
 
@@ -216,14 +278,30 @@
   <div class="modal" role="dialog" aria-modal="true">
     <h3 id="mTitle"></h3>
     <div class="m-date" id="mDate"></div>
-    <div class="m-row"><span class="k">類型</span><span class="v" id="mType"></span></div>
-    <div class="m-row"><span class="k">備註</span><span class="v" id="mNote"></span></div>
+    <div id="mBody"></div>
     <button class="m-close" id="mClose" type="button">關閉</button>
   </div>
 </div>
 
 <script>
-/* ================= 資料（取自 gov.mo 官方頁面） ================= */
+/* ================= 登入驗證（前端遮擋） ================= */
+const ACCESS_CODE = "Ws123456";
+const AUTH_FLAG = "mh-auth-v1";
+function unlock(){
+  sessionStorage.setItem(AUTH_FLAG, "1");
+  document.body.classList.remove("locked");
+}
+function lock(){ document.body.classList.add("locked"); }
+function tryUnlock(){
+  const v = document.getElementById("gatePwd").value;
+  if(v === ACCESS_CODE){ unlock(); }
+  else { document.getElementById("gateErr").textContent = "驗證碼不正確，請再試一次。"; }
+}
+document.getElementById("gateBtn").addEventListener("click", tryUnlock);
+document.getElementById("gatePwd").addEventListener("keydown", e => { if(e.key === "Enter") tryUnlock(); });
+if(sessionStorage.getItem(AUTH_FLAG) === "1"){ document.body.classList.remove("locked"); }
+
+/* ================= 官方資料（取自 gov.mo） ================= */
 const DATA = {
   "2026": {
     holidays: [
@@ -309,31 +387,89 @@ const WEEK_CN = ["星期日","星期一","星期二","星期三","星期四","�
 const TYPE = {
   f: {label:"公眾假期", badge:"f"},
   c: {label:"補假日", badge:"c"},
-  t: {label:"豁免上班", badge:"t"}
+  t: {label:"豁免上班", badge:"t"},
+  x: {label:"年假", badge:"x"},
+  v: {label:"十日假", badge:"v"},
+  l: {label:"特別假", badge:"l"}
 };
 
-let state = { year:"2026", mode:"grid" };
+/* ================= 年份：今年 + 明年 ================= */
+const CUR_Y = new Date().getFullYear();
+const NEXT_Y = CUR_Y + 1;
+const YEAR_OPTIONS = [CUR_Y, NEXT_Y];
+function yearHasData(y){ return Object.prototype.hasOwnProperty.call(DATA, String(y)); }
+let state = { mode:"grid", year: String(yearHasData(CUR_Y) ? CUR_Y : (yearHasData(NEXT_Y) ? NEXT_Y : CUR_Y)) };
 
-/* 建立日期索引：key=YYYY-MM-DD -> {type, record} */
-function buildIndex(year){
-  const src = DATA[year];
+/* ================= 個人休假（localStorage） ================= */
+const LEAVE_KEY = "mh-leaves-v1";
+function loadLeaves(){
+  try{ const raw = localStorage.getItem(LEAVE_KEY); const arr = raw ? JSON.parse(raw) : []; return Array.isArray(arr) ? arr : []; }
+  catch(e){ return []; }
+}
+function saveLeaves(list){ localStorage.setItem(LEAVE_KEY, JSON.stringify(list)); }
+let leaves = loadLeaves();
+
+function eachDateInRange(start, end, cb){
+  const s = new Date(start+"T00:00:00"), e = new Date(end+"T00:00:00");
+  if(isNaN(s) || isNaN(e)) return;
+  for(let t = s.getTime(); t <= e.getTime(); t += 86400000){
+    const dt = new Date(t);
+    cb(dateKey(dt.getFullYear(), dt.getMonth()+1, dt.getDate()));
+  }
+}
+function buildLeaveIndex(){
   const map = {};
+  leaves.forEach(r => {
+    eachDateInRange(r.start, r.end, k => { (map[k] = map[k] || []).push(r); });
+  });
+  return map;
+}
+function leavesInYear(y){
+  const yStart = `${y}-01-01`, yEnd = `${y}-12-31`;
+  return leaves.filter(r => r.start <= yEnd && r.end >= yStart)
+               .sort((a,b) => a.start < b.start ? -1 : 1);
+}
+
+/* ================= 工具 ================= */
+function pad(n){ return String(n).padStart(2,"0"); }
+function dateKey(y,m,d){ return `${y}-${pad(m)}-${pad(d)}`; }
+function parseKey(k){ const [y,m,d] = k.split("-").map(Number); return {y,m,d}; }
+function weekday(k){ return new Date(parseKey(k).y, parseKey(k).m-1, parseKey(k).d).getDay(); }
+function escapeHtml(s){ return String(s==null?"":s).replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c])); }
+
+function buildIndex(year){
+  const map = {};
+  const src = DATA[year];
+  if(!src) return map;
   src.holidays.forEach(r => map[r.d] = {type:"f", record:r});
   src.compensations.forEach(r => map[r.d] = {type:"c", record:r});
   src.tolerances.forEach(r => map[r.d] = {type:"t", record:r});
   return map;
 }
 
-function pad(n){ return String(n).padStart(2,"0"); }
-function dateKey(y,m,d){ return `${y}-${pad(m)}-${pad(d)}`; }
-function parseKey(k){ const [y,m,d] = k.split("-").map(Number); return {y,m,d}; }
-function weekday(k){ return new Date(parseKey(k).y, parseKey(k).m-1, parseKey(k).d).getDay(); }
+/* ================= 年份下拉 ================= */
+function initYearSelect(){
+  const sel = document.getElementById("yearSelect");
+  sel.innerHTML = YEAR_OPTIONS.map((y,i) => {
+    const tag = i===0 ? "（今年）" : "（明年）";
+    const avail = yearHasData(y) ? "" : "（官方待公布）";
+    return `<option value="${y}">${y} 年${tag}${avail}</option>`;
+  }).join("");
+  sel.value = state.year;
+}
 
 /* ================= Mode1：網格 ================= */
 function renderGrid(){
   const table = document.getElementById("gridTable");
+  const notice = document.getElementById("gridNotice");
   const year = Number(state.year);
   const map = buildIndex(state.year);
+  const leaveMap = buildLeaveIndex();
+  const hasData = yearHasData(state.year);
+
+  notice.innerHTML = hasData ? "" :
+    `<div class="notice-bar">${state.year} 年官方假期尚未公布，官方欄位暫無資料；你仍可在上方登記個人休假。</div>`;
+
   let html = "<thead><tr><th class='month-corner'></th>";
   for(let d=1; d<=31; d++) html += `<th>${pad(d)}</th>`;
   html += "</tr></thead><tbody>";
@@ -350,19 +486,27 @@ function renderGrid(){
       const key = dateKey(year, m, d);
       const wd = weekday(key);
       const entry = map[key];
+      const myLeaves = leaveMap[key] || [];
       let cls = "cell", mark = "", star = "", clickable = false, label = "";
+
       if(entry){
         clickable = true;
         if(entry.type === "f"){ cls += " f"; mark = "F"; if(entry.record.mandatory) star = "*"; }
         else if(entry.type === "c"){ cls += " c"; mark = "C"; }
         else { cls += " t"; mark = "T"; }
         label = entry.record.name;
+      } else if(myLeaves.length){
+        clickable = true;
+        const lr = myLeaves[0];
+        cls += " " + lr.type;
+        mark = lr.type.toUpperCase();
+        label = TYPE[lr.type].label + (lr.note ? " · " + lr.note : "");
       } else {
         if(wd === 6){ cls += " weekend"; mark = "S"; }
         else if(wd === 0){ cls += " weekend"; mark = "D"; }
       }
       const clickAttr = clickable ? `data-key="${key}"` : "";
-      html += `<td class="${cls} ${clickable?"clickable":""}" ${clickAttr} title="${label}">
+      html += `<td class="${cls} ${clickable?"clickable":""}" ${clickAttr} title="${escapeHtml(label)}">
         ${star?`<span class="star">${star}</span>`:""}<span class="mark">${mark}</span></td>`;
     }
     html += "</tr>";
@@ -377,54 +521,147 @@ function renderGrid(){
 
 /* ================= Mode2：清單 ================= */
 function renderList(){
+  const body = document.getElementById("listBody");
+  const notice = document.getElementById("listNotice");
   const src = DATA[state.year];
   const rows = [];
-  src.holidays.forEach(r => rows.push({key:r.d, type:"f", record:r}));
-  src.compensations.forEach(r => rows.push({key:r.d, type:"c", record:r}));
-  src.tolerances.forEach(r => rows.push({key:r.d, type:"t", record:r}));
+  if(src){
+    src.holidays.forEach(r => rows.push({key:r.d, type:"f", record:r}));
+    src.compensations.forEach(r => rows.push({key:r.d, type:"c", record:r}));
+    src.tolerances.forEach(r => rows.push({key:r.d, type:"t", record:r}));
+  }
+  leavesInYear(Number(state.year)).forEach(r => {
+    rows.push({key:r.start, type:r.type, record:r, leave:true});
+  });
   rows.sort((a,b) => a.key < b.key ? -1 : 1);
 
-  const body = document.getElementById("listBody");
+  notice.innerHTML = src ? "" :
+    `<div class="notice-bar">${state.year} 年官方假期尚未公布，下方僅顯示你登記的個人休假。</div>`;
+
+  if(!rows.length){
+    body.innerHTML = `<tr><td colspan="2" class="leave-empty">本年度尚無假期或休假記錄。</td></tr>`;
+    return;
+  }
+
   body.innerHTML = rows.map(row => {
     const {y,m,d} = parseKey(row.key);
     const wd = WEEK_CN[weekday(row.key)];
     const t = TYPE[row.type];
-    let meta = "";
-    if(row.type === "f" && row.record.mandatory) meta = "強制性假日（第 7/2008 號法律第四十四條）";
-    else if(row.type === "t") meta = `${row.record.session}獲豁免上班`;
-    else if(row.type === "c") meta = "公共行政工作人員補假日";
+    let dateText, meta = "", name;
+    if(row.leave){
+      const r = row.record;
+      const sameDay = r.start === r.end;
+      dateText = sameDay ? `${m}月${d}日` : `${r.start} ～ ${r.end}`;
+      name = r.note || t.label;
+      meta = sameDay ? `${r.start} · ${wd}` : "個人登記區間";
+    } else {
+      dateText = `${m}月${d}日`;
+      name = row.record.name;
+      if(row.type === "f" && row.record.mandatory) meta = "強制性假日（第 7/2008 號法律第四十四條）";
+      else if(row.type === "t") meta = `${row.record.session}獲豁免上班`;
+      else if(row.type === "c") meta = "公共行政工作人員補假日";
+      else meta = "";
+    }
+    const sub = row.leave ? (row.record.note ? `${TYPE[row.type].label}` : meta) : meta;
     return `<tr>
-      <td><div class="date-main">${m}月${d}日</div><div class="date-sub">${row.key} · ${wd}</div></td>
-      <td><span class="badge ${t.badge}">${t.label}</span><span class="desc-name">${row.record.name}</span>
-        ${meta?`<div class="desc-meta">${meta}</div>`:""}</td>
+      <td><div class="date-main">${escapeHtml(dateText)}</div><div class="date-sub">${escapeHtml(row.leave ? (sameDayStr(row.record) ? row.record.start+" · "+wd : "") : row.key+" · "+wd)}</div></td>
+      <td><span class="badge ${t.badge}">${t.label}</span><span class="desc-name">${escapeHtml(name)}</span>
+        ${sub?`<div class="desc-meta">${escapeHtml(sub)}</div>`:""}</td>
     </tr>`;
   }).join("");
 }
+function sameDayStr(r){ return r.start === r.end; }
+
+/* ================= 休假表單與列表 ================= */
+function renderLeaveList(){
+  const box = document.getElementById("leaveList");
+  const list = leaves.slice().sort((a,b) => a.start < b.start ? -1 : 1);
+  if(!list.length){
+    box.innerHTML = `<div class="leave-empty">尚未登記休假。選取日期區間後按「登記休假」，預設類型為年假。</div>`;
+    return;
+  }
+  box.innerHTML = list.map(r => {
+    const t = TYPE[r.type];
+    const range = r.start === r.end ? r.start : `${r.start} ～ ${r.end}`;
+    return `<div class="leave-row" data-id="${r.id}">
+      <span class="lr-date">${escapeHtml(range)}</span>
+      <span class="badge ${t.badge}">${t.label}</span>
+      <span class="lr-note">${escapeHtml(r.note || "—")}</span>
+      <button class="lr-del" type="button" data-del="${r.id}">刪除</button>
+    </div>`;
+  }).join("");
+  box.querySelectorAll("[data-del]").forEach(btn => {
+    btn.addEventListener("click", () => deleteLeave(btn.dataset.del));
+  });
+}
+function addLeave(data){
+  leaves.push({ id: String(Date.now()) + "-" + Math.random().toString(36).slice(2,7), ...data });
+  saveLeaves(leaves);
+}
+function deleteLeave(id){
+  leaves = leaves.filter(r => r.id !== id);
+  saveLeaves(leaves);
+  renderAll();
+}
+document.getElementById("leaveForm").addEventListener("submit", e => {
+  e.preventDefault();
+  const start = document.getElementById("leaveStart").value;
+  const end = document.getElementById("leaveEnd").value;
+  const type = document.getElementById("leaveType").value;
+  const note = document.getElementById("leaveNote").value.trim();
+  if(!start || !end) return;
+  if(end < start){ alert("結束日期不能早於開始日期。"); return; }
+  addLeave({start, end, type, note});
+  document.getElementById("leaveNote").value = "";
+  renderAll();
+});
 
 /* ================= 彈窗 ================= */
 function openModal(key){
   const map = buildIndex(state.year);
+  const leaveMap = buildLeaveIndex();
   const entry = map[key];
+  const myLeaves = leaveMap[key] || [];
   const {y,m,d} = parseKey(key);
   const wd = WEEK_CN[weekday(key)];
   const mask = document.getElementById("modalMask");
-  if(!entry){
-    document.getElementById("mTitle").textContent = wd;
-    document.getElementById("mDate").textContent = `${y}年${m}月${d}日`;
-    document.getElementById("mType").textContent = "周末";
-    document.getElementById("mNote").textContent = "非公眾假期、補假日或豁免上班日期。";
-  } else {
+  const body = document.getElementById("mBody");
+
+  document.getElementById("mDate").textContent = `${y}年${m}月${d}日 · ${wd}`;
+
+  let rowsHtml = "";
+  if(entry){
     const t = TYPE[entry.type];
     const r = entry.record;
     document.getElementById("mTitle").textContent = r.name;
-    document.getElementById("mDate").textContent = `${y}年${m}月${d}日 · ${wd}`;
-    document.getElementById("mType").innerHTML = `<span class="badge ${t.badge}">${t.label}</span>`;
     let note = "";
     if(entry.type === "f") note = r.mandatory ? "強制性假日（第 7/2008 號法律第四十四條）" : "非強制性公眾假期";
     else if(entry.type === "c") note = "按《澳門公共行政工作人員通則》第七十九條第四款訂定之補假日";
     else note = `行政長官批示，當日${r.session}獲豁免上班`;
-    document.getElementById("mNote").textContent = note;
+    rowsHtml += `<div class="m-row"><span class="k">類型</span><span class="v"><span class="badge ${t.badge}">${t.label}</span></span></div>
+      <div class="m-row"><span class="k">備註</span><span class="v">${escapeHtml(note)}</span></div>`;
+  } else {
+    document.getElementById("mTitle").textContent = myLeaves.length ? "個人休假記錄" : wd;
   }
+
+  myLeaves.forEach(r => {
+    const t = TYPE[r.type];
+    const range = r.start === r.end ? r.start : `${r.start} ～ ${r.end}`;
+    rowsHtml += `<div class="m-row"><span class="k">休假</span><span class="v">
+        <span class="badge ${t.badge}">${t.label}</span>${escapeHtml(range)}
+        ${r.note?` <span style="color:var(--ink-3)">· ${escapeHtml(r.note)}</span>`:""}
+        <button class="lr-del" type="button" data-del="${r.id}">刪除</button>
+      </span></div>`;
+  });
+
+  if(!entry && !myLeaves.length){
+    rowsHtml = `<div class="m-row"><span class="k">類型</span><span class="v">周末</span></div>
+      <div class="m-row"><span class="k">備註</span><span class="v">非公眾假期、補假日或豁免上班日期。</span></div>`;
+  }
+  body.innerHTML = rowsHtml;
+  body.querySelectorAll("[data-del]").forEach(btn => {
+    btn.addEventListener("click", () => { deleteLeave(btn.dataset.del); closeModal(); });
+  });
   mask.classList.add("show");
 }
 function closeModal(){ document.getElementById("modalMask").classList.remove("show"); }
@@ -436,6 +673,7 @@ document.addEventListener("keydown", e => { if(e.key === "Escape") closeModal();
 function renderAll(){
   renderGrid();
   renderList();
+  renderLeaveList();
   document.getElementById("srcLink").href = `https://www.gov.mo/zh-hant/public-holidays/year-${state.year}/`;
 }
 function switchMode(mode){
@@ -449,6 +687,15 @@ document.getElementById("modeGrid").addEventListener("click", () => switchMode("
 document.getElementById("modeList").addEventListener("click", () => switchMode("list"));
 document.getElementById("yearSelect").addEventListener("change", e => { state.year = e.target.value; renderAll(); });
 
+/* 表單預設日期：今天 */
+(function(){
+  const now = new Date();
+  const today = dateKey(now.getFullYear(), now.getMonth()+1, now.getDate());
+  document.getElementById("leaveStart").value = today;
+  document.getElementById("leaveEnd").value = today;
+})();
+
+initYearSelect();
 renderAll();
 </script>
 </body>
