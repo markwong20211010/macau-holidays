@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>澳門公眾假期一覽 · Macau Public Holidays</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Crect x='3' y='5' width='18' height='16' rx='2' fill='%232c6fb0'/%3E%3Crect x='3' y='5' width='18' height='5' rx='2' fill='%231d4f7d'/%3E%3Crect x='7' y='3' width='2' height='4' rx='1' fill='%231d4f7d'/%3E%3Crect x='15' y='3' width='2' height='4' rx='1' fill='%231d4f7d'/%3E%3Ccircle cx='8.5' cy='13' r='1.3' fill='white'/%3E%3Ccircle cx='12' cy='13' r='1.3' fill='white'/%3E%3Ccircle cx='15.5' cy='13' r='1.3' fill='white'/%3E%3C/svg%3E">
+<style>
+  :root{
+    --bg:#f4f6f8; --card:#ffffff; --line:#d9dde3; --line-soft:#e7eaee;
+    --ink:#1f2733; --ink-2:#5b6572; --ink-3:#8a9099;
+    --weekend-bg:#f0f1f3; --weekend-ink:#8a9099;
+    --f-bg:#fdecec; --f-ink:#b8342a;
+    --c-bg:#eaf2fb; --c-ink:#2c6fb0;
+    --t-bg:#fdf6e3; --t-ink:#9a7410;
+    --head-bg:#eceff3;
+    --radius:10px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{height:100%}
+  body{
+    background:var(--bg); color:var(--ink);
+    font-family:"PingFang TC","Microsoft JhengHei","Noto Sans TC","Helvetica Neue",Arial,sans-serif;
+    padding:24px 18px 48px;
+  }
+  .wrap{max-width:1180px;margin:0 auto}
+
+  /* ===== 頂部欄 ===== */
+  header.top{
+    display:flex;flex-wrap:wrap;align-items:center;gap:14px;
+    margin-bottom:18px;
+  }
+  .title-block{flex:1 1 280px;min-width:0}
+  .title-block h1{font-size:22px;font-weight:700;letter-spacing:.5px}
+  .title-block p{font-size:13px;color:var(--ink-2);margin-top:4px}
+  .title-block .src{color:var(--ink-3);font-size:12px}
+  .title-block .src a{color:var(--c-ink);text-decoration:none}
+  .title-block .src a:hover{text-decoration:underline}
+
+  .controls{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+  .seg{
+    display:inline-flex;background:var(--card);border:1px solid var(--line);
+    border-radius:9px;padding:3px;gap:2px;
+  }
+  .seg button{
+    border:0;background:transparent;padding:7px 14px;border-radius:7px;
+    font-size:13.5px;color:var(--ink-2);cursor:pointer;font-family:inherit;
+  }
+  .seg button.active{background:var(--c-ink);color:#fff;font-weight:600}
+  select.year-select{
+    border:1px solid var(--line);background:var(--card);border-radius:9px;
+    padding:8px 12px;font-size:14px;color:var(--ink);font-family:inherit;cursor:pointer;
+  }
+
+  /* ===== 卡片 ===== */
+  .card{
+    background:var(--card);border:1px solid var(--line-soft);border-radius:var(--radius);
+    padding:18px;box-shadow:0 1px 3px rgba(20,30,50,.06);
+  }
+
+  /* ===== Mode1 網格 ===== */
+  .grid-scroll{overflow-x:auto}
+  table.grid{border-collapse:collapse;width:100%;table-layout:fixed;min-width:920px}
+  table.grid th,table.grid td{
+    border:1px solid var(--line-soft);text-align:center;vertical-align:middle;
+    font-size:13px;height:38px;
+  }
+  table.grid thead th{
+    background:var(--head-bg);color:var(--ink-2);font-weight:600;font-size:12.5px;
+  }
+  table.grid thead th.month-corner{width:96px}
+  table.grid td.month-label{
+    background:var(--head-bg);font-weight:600;color:var(--ink);
+    text-align:left;padding-left:10px;font-size:13px;white-space:nowrap;
+  }
+  table.grid td.month-label .pt{color:var(--ink-3);font-weight:400;font-size:11.5px;margin-left:5px}
+  table.grid td.cell{cursor:default;position:relative;padding:0}
+  table.grid td.cell.clickable{cursor:pointer}
+  table.grid td.cell.clickable:hover{outline:2px solid var(--c-ink);outline-offset:-2px}
+  td.cell .mark{font-weight:700;font-size:13px}
+  td.cell .star{position:absolute;top:2px;right:4px;font-size:9px;color:var(--f-ink)}
+  td.cell.weekend{background:var(--weekend-bg);color:var(--weekend-ink)}
+  td.cell.weekend .mark{color:var(--weekend-ink)}
+  td.cell.f{background:var(--f-bg);color:var(--f-ink)}
+  td.cell.c{background:var(--c-bg);color:var(--c-ink)}
+  td.cell.t{background:var(--t-bg);color:var(--t-ink)}
+  td.cell.empty{background:#fafbfc;color:transparent}
+
+  /* 圖例 */
+  .legend{
+    display:flex;flex-wrap:wrap;gap:10px 22px;margin-top:16px;
+    padding:14px 16px;background:#fafbfc;border:1px dashed var(--line);border-radius:var(--radius);
+    font-size:13px;color:var(--ink-2);
+  }
+  .legend .group{display:flex;flex-wrap:wrap;gap:10px 18px}
+  .legend .item{display:inline-flex;align-items:center;gap:7px}
+  .legend .sym{
+    display:inline-flex;align-items:center;justify-content:center;
+    width:24px;height:24px;border:1px solid var(--line);border-radius:5px;
+    font-weight:700;font-size:12.5px;background:#fff;
+  }
+  .legend .sym.s{background:var(--weekend-bg);color:var(--weekend-ink)}
+  .legend .sym.d{background:var(--weekend-bg);color:var(--weekend-ink)}
+  .legend .sym.f{background:var(--f-bg);color:var(--f-ink)}
+  .legend .sym.c{background:var(--c-bg);color:var(--c-ink)}
+  .legend .sym.t{background:var(--t-bg);color:var(--t-ink)}
+  .legend .note{width:100%;font-size:12px;color:var(--ink-3)}
+
+  /* ===== Mode2 清單 ===== */
+  table.list{border-collapse:collapse;width:100%;table-layout:fixed}
+  table.list col.col-date{width:34%}
+  table.list col.col-desc{width:66%}
+  table.list th,table.list td{
+    border-bottom:1px solid var(--line-soft);padding:12px 14px;text-align:left;font-size:14px;
+  }
+  table.list thead th{background:var(--head-bg);color:var(--ink-2);font-weight:600;font-size:12.5px}
+  table.list tbody tr:hover{background:#f7f9fc}
+  table.list td .date-main{font-weight:600}
+  table.list td .date-sub{font-size:12px;color:var(--ink-3);margin-top:2px}
+  .badge{
+    display:inline-block;padding:2px 9px;border-radius:11px;font-size:11.5px;font-weight:600;
+    margin-right:8px;white-space:nowrap;
+  }
+  .badge.f{background:var(--f-bg);color:var(--f-ink)}
+  .badge.c{background:var(--c-bg);color:var(--c-ink)}
+  .badge.t{background:var(--t-bg);color:var(--t-ink)}
+  .badge.mand{background:#efece6;color:#7a6a3f;font-weight:500}
+  .desc-name{color:var(--ink)}
+  .desc-meta{font-size:12px;color:var(--ink-3);margin-top:3px}
+
+  /* ===== 彈窗 ===== */
+  .modal-mask{
+    position:fixed;inset:0;background:rgba(20,30,50,.42);display:none;
+    align-items:center;justify-content:center;padding:20px;z-index:50;
+  }
+  .modal-mask.show{display:flex}
+  .modal{
+    background:#fff;border-radius:14px;max-width:420px;width:100%;padding:22px 24px;
+    box-shadow:0 12px 40px rgba(20,30,50,.25);
+  }
+  .modal h3{font-size:17px;margin-bottom:6px}
+  .modal .m-date{font-size:13px;color:var(--ink-3);margin-bottom:14px}
+  .modal .m-row{display:flex;gap:10px;font-size:14px;padding:8px 0;border-top:1px solid var(--line-soft)}
+  .modal .m-row .k{width:72px;color:var(--ink-3);flex:none}
+  .modal .m-row .v{flex:1;min-width:0}
+  .modal .m-close{
+    margin-top:16px;width:100%;padding:10px;border:0;border-radius:9px;
+    background:var(--c-ink);color:#fff;font-size:14px;cursor:pointer;font-family:inherit;
+  }
+
+  footer.foot{margin-top:20px;font-size:12px;color:var(--ink-3);line-height:1.7}
+  footer.foot a{color:var(--c-ink);text-decoration:none}
+
+  @media (max-width:640px){
+    body{padding:14px 10px 36px}
+    .title-block h1{font-size:18px}
+    .card{padding:12px}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="top">
+    <div class="title-block">
+      <h1>澳門特別行政區 · 公眾假期一覽</h1>
+      <p>公眾假期、補假日及豁免上班日期</p>
+      <p class="src">資料來源：<a id="srcLink" href="https://www.gov.mo/zh-hant/public-holidays/year-2026/" target="_blank" rel="noopener">澳門特別行政區政府入口網站</a></p>
+    </div>
+    <div class="controls">
+      <select class="year-select" id="yearSelect" aria-label="年份">
+        <option value="2026">2026 年</option>
+        <option value="2027">2027 年</option>
+      </select>
+      <div class="seg" role="tablist" aria-label="顯示模式">
+        <button id="modeGrid" class="active" type="button">模式一 · 月曆網格</button>
+        <button id="modeList" type="button">模式二 · 日期清單</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== Mode1：月曆網格 ===== -->
+  <section id="viewGrid" class="card">
+    <div class="grid-scroll">
+      <table class="grid" id="gridTable" aria-label="月曆網格"></table>
+    </div>
+    <div class="legend">
+      <div class="group">
+        <span class="item"><span class="sym f">F</span>公眾假期 <span style="color:var(--ink-3)">Feriados</span></span>
+        <span class="item"><span class="sym c">C</span>補假日 <span style="color:var(--ink-3)">Dias de descanso compensatório</span></span>
+        <span class="item"><span class="sym t">T</span>豁免上班 <span style="color:var(--ink-3)">Tolerâncias de ponto</span></span>
+        <span class="item"><span class="sym s">S</span>星期六 <span style="color:var(--ink-3)">Sábado</span></span>
+        <span class="item"><span class="sym d">D</span>星期日 <span style="color:var(--ink-3)">Domingo</span></span>
+      </div>
+      <div class="note">標有 <strong>*</strong> 號者，按照第 7/2008 號法律第四十四條之規定屬強制性假日；T 標註「下午」者為當日下午獲豁免上班。點擊有標記的日期可查看假期詳情。</div>
+    </div>
+  </section>
+
+  <!-- ===== Mode2：日期清單 ===== -->
+  <section id="viewList" class="card" style="display:none">
+    <table class="list">
+      <colgroup><col class="col-date"><col class="col-desc"></colgroup>
+      <thead><tr><th>日期 Data</th><th>假期資訊 Descrição</th></tr></thead>
+      <tbody id="listBody"></tbody>
+    </table>
+  </section>
+
+  <footer class="foot">
+    年份頁面規則：gov.mo/zh-hant/public-holidays/year-YYYY/ （今年為 year-2026，下一年為 year-2027）。<br>
+    公眾假期依第 60/2000 號行政命令訂定；補假日依《澳門公共行政工作人員通則》第七十九條第四款訂定；豁免上班日期由行政長官批示核准。
+  </footer>
+</div>
+
+<!-- 詳情彈窗 -->
+<div class="modal-mask" id="modalMask">
+  <div class="modal" role="dialog" aria-modal="true">
+    <h3 id="mTitle"></h3>
+    <div class="m-date" id="mDate"></div>
+    <div class="m-row"><span class="k">類型</span><span class="v" id="mType"></span></div>
+    <div class="m-row"><span class="k">備註</span><span class="v" id="mNote"></span></div>
+    <button class="m-close" id="mClose" type="button">關閉</button>
+  </div>
+</div>
+
+<script>
+/* ================= 資料（取自 gov.mo 官方頁面） ================= */
+const DATA = {
+  "2026": {
+    holidays: [
+      {d:"2026-01-01", name:"元旦", mandatory:true},
+      {d:"2026-02-17", name:"農曆正月初一", mandatory:true},
+      {d:"2026-02-18", name:"農曆正月初二", mandatory:true},
+      {d:"2026-02-19", name:"農曆正月初三", mandatory:true},
+      {d:"2026-04-03", name:"耶穌受難日", mandatory:false},
+      {d:"2026-04-04", name:"復活節前日", mandatory:false},
+      {d:"2026-04-05", name:"清明節", mandatory:true},
+      {d:"2026-05-01", name:"勞動節", mandatory:true},
+      {d:"2026-05-24", name:"佛誕節", mandatory:false},
+      {d:"2026-06-19", name:"端午節", mandatory:false},
+      {d:"2026-09-26", name:"中秋節翌日", mandatory:true},
+      {d:"2026-10-01", name:"中華人民共和國國慶日", mandatory:true},
+      {d:"2026-10-02", name:"中華人民共和國國慶日翌日", mandatory:false},
+      {d:"2026-10-18", name:"重陽節", mandatory:true},
+      {d:"2026-11-02", name:"追思節", mandatory:false},
+      {d:"2026-12-08", name:"聖母無原罪瞻禮", mandatory:false},
+      {d:"2026-12-20", name:"澳門特別行政區成立紀念日", mandatory:true},
+      {d:"2026-12-22", name:"冬至", mandatory:false},
+      {d:"2026-12-24", name:"聖誕節前日", mandatory:false},
+      {d:"2026-12-25", name:"聖誕節", mandatory:false}
+    ],
+    tolerances: [
+      {d:"2026-02-16", session:"下午", name:"農曆除夕"},
+      {d:"2026-12-31", session:"下午", name:"除夕"}
+    ],
+    compensations: [
+      {d:"2026-04-06", name:"復活節前日的補假"},
+      {d:"2026-04-07", name:"清明節的補假"},
+      {d:"2026-05-25", name:"佛誕節的補假"},
+      {d:"2026-09-28", name:"中秋節翌日的補假"},
+      {d:"2026-10-19", name:"重陽節的補假"},
+      {d:"2026-12-21", name:"澳門特別行政區成立紀念日的補假"}
+    ]
+  },
+  "2027": {
+    holidays: [
+      {d:"2027-01-01", name:"元旦", mandatory:true},
+      {d:"2027-02-06", name:"農曆正月初一", mandatory:true},
+      {d:"2027-02-07", name:"農曆正月初二", mandatory:true},
+      {d:"2027-02-08", name:"農曆正月初三", mandatory:true},
+      {d:"2027-03-26", name:"耶穌受難日", mandatory:false},
+      {d:"2027-03-27", name:"復活節前日", mandatory:false},
+      {d:"2027-04-05", name:"清明節", mandatory:true},
+      {d:"2027-05-01", name:"勞動節", mandatory:true},
+      {d:"2027-05-13", name:"佛誕節", mandatory:false},
+      {d:"2027-06-09", name:"端午節", mandatory:false},
+      {d:"2027-09-16", name:"中秋節翌日", mandatory:true},
+      {d:"2027-10-01", name:"中華人民共和國國慶日", mandatory:true},
+      {d:"2027-10-02", name:"中華人民共和國國慶日翌日", mandatory:false},
+      {d:"2027-10-08", name:"重陽節", mandatory:true},
+      {d:"2027-11-02", name:"追思節", mandatory:false},
+      {d:"2027-12-08", name:"聖母無原罪瞻禮", mandatory:false},
+      {d:"2027-12-20", name:"澳門特別行政區成立紀念日", mandatory:true},
+      {d:"2027-12-22", name:"冬至", mandatory:false},
+      {d:"2027-12-24", name:"聖誕節前日", mandatory:false},
+      {d:"2027-12-25", name:"聖誕節", mandatory:false}
+    ],
+    tolerances: [
+      {d:"2027-02-05", session:"下午", name:"農曆除夕"},
+      {d:"2027-12-31", session:"下午", name:"除夕"}
+    ],
+    compensations: [
+      {d:"2027-02-09", name:"農曆正月初一的補假"},
+      {d:"2027-02-10", name:"農曆正月初二的補假"},
+      {d:"2027-03-29", name:"復活節前日的補假"},
+      {d:"2027-05-03", name:"勞動節的補假"},
+      {d:"2027-10-04", name:"中華人民共和國國慶日翌日的補假"},
+      {d:"2027-12-27", name:"聖誕節的補假"}
+    ]
+  }
+};
+
+const MONTHS = [
+  {zh:"一月", pt:"Jan"}, {zh:"二月", pt:"Fev"}, {zh:"三月", pt:"Mar"},
+  {zh:"四月", pt:"Abr"}, {zh:"五月", pt:"Mai"}, {zh:"六月", pt:"Jun"},
+  {zh:"七月", pt:"Jul"}, {zh:"八月", pt:"Ago"}, {zh:"九月", pt:"Set"},
+  {zh:"十月", pt:"Out"}, {zh:"十一月", pt:"Nov"}, {zh:"十二月", pt:"Dez"}
+];
+const WEEK_CN = ["星期日","星期一","星期二","星期三","星期四","星期五","星期六"];
+const TYPE = {
+  f: {label:"公眾假期", badge:"f"},
+  c: {label:"補假日", badge:"c"},
+  t: {label:"豁免上班", badge:"t"}
+};
+
+let state = { year:"2026", mode:"grid" };
+
+/* 建立日期索引：key=YYYY-MM-DD -> {type, record} */
+function buildIndex(year){
+  const src = DATA[year];
+  const map = {};
+  src.holidays.forEach(r => map[r.d] = {type:"f", record:r});
+  src.compensations.forEach(r => map[r.d] = {type:"c", record:r});
+  src.tolerances.forEach(r => map[r.d] = {type:"t", record:r});
+  return map;
+}
+
+function pad(n){ return String(n).padStart(2,"0"); }
+function dateKey(y,m,d){ return `${y}-${pad(m)}-${pad(d)}`; }
+function parseKey(k){ const [y,m,d] = k.split("-").map(Number); return {y,m,d}; }
+function weekday(k){ return new Date(parseKey(k).y, parseKey(k).m-1, parseKey(k).d).getDay(); }
+
+/* ================= Mode1：網格 ================= */
+function renderGrid(){
+  const table = document.getElementById("gridTable");
+  const year = Number(state.year);
+  const map = buildIndex(state.year);
+  let html = "<thead><tr><th class='month-corner'></th>";
+  for(let d=1; d<=31; d++) html += `<th>${pad(d)}</th>`;
+  html += "</tr></thead><tbody>";
+
+  MONTHS.forEach((mo, mi) => {
+    const m = mi + 1;
+    const daysInMonth = new Date(year, m, 0).getDate();
+    html += `<tr><td class="month-label">${mo.zh}<span class="pt">${mo.pt}</span></td>`;
+    for(let d=1; d<=31; d++){
+      if(d > daysInMonth){
+        html += `<td class="cell empty" aria-label="${m}月${d}日 不存在"></td>`;
+        continue;
+      }
+      const key = dateKey(year, m, d);
+      const wd = weekday(key);
+      const entry = map[key];
+      let cls = "cell", mark = "", star = "", clickable = false, label = "";
+      if(entry){
+        clickable = true;
+        if(entry.type === "f"){ cls += " f"; mark = "F"; if(entry.record.mandatory) star = "*"; }
+        else if(entry.type === "c"){ cls += " c"; mark = "C"; }
+        else { cls += " t"; mark = "T"; }
+        label = entry.record.name;
+      } else {
+        if(wd === 6){ cls += " weekend"; mark = "S"; }
+        else if(wd === 0){ cls += " weekend"; mark = "D"; }
+      }
+      const clickAttr = clickable ? `data-key="${key}"` : "";
+      html += `<td class="${cls} ${clickable?"clickable":""}" ${clickAttr} title="${label}">
+        ${star?`<span class="star">${star}</span>`:""}<span class="mark">${mark}</span></td>`;
+    }
+    html += "</tr>";
+  });
+  html += "</tbody>";
+  table.innerHTML = html;
+
+  table.querySelectorAll("td.cell.clickable").forEach(td => {
+    td.addEventListener("click", () => openModal(td.dataset.key));
+  });
+}
+
+/* ================= Mode2：清單 ================= */
+function renderList(){
+  const src = DATA[state.year];
+  const rows = [];
+  src.holidays.forEach(r => rows.push({key:r.d, type:"f", record:r}));
+  src.compensations.forEach(r => rows.push({key:r.d, type:"c", record:r}));
+  src.tolerances.forEach(r => rows.push({key:r.d, type:"t", record:r}));
+  rows.sort((a,b) => a.key < b.key ? -1 : 1);
+
+  const body = document.getElementById("listBody");
+  body.innerHTML = rows.map(row => {
+    const {y,m,d} = parseKey(row.key);
+    const wd = WEEK_CN[weekday(row.key)];
+    const t = TYPE[row.type];
+    let meta = "";
+    if(row.type === "f" && row.record.mandatory) meta = "強制性假日（第 7/2008 號法律第四十四條）";
+    else if(row.type === "t") meta = `${row.record.session}獲豁免上班`;
+    else if(row.type === "c") meta = "公共行政工作人員補假日";
+    return `<tr>
+      <td><div class="date-main">${m}月${d}日</div><div class="date-sub">${row.key} · ${wd}</div></td>
+      <td><span class="badge ${t.badge}">${t.label}</span><span class="desc-name">${row.record.name}</span>
+        ${meta?`<div class="desc-meta">${meta}</div>`:""}</td>
+    </tr>`;
+  }).join("");
+}
+
+/* ================= 彈窗 ================= */
+function openModal(key){
+  const map = buildIndex(state.year);
+  const entry = map[key];
+  const {y,m,d} = parseKey(key);
+  const wd = WEEK_CN[weekday(key)];
+  const mask = document.getElementById("modalMask");
+  if(!entry){
+    document.getElementById("mTitle").textContent = wd;
+    document.getElementById("mDate").textContent = `${y}年${m}月${d}日`;
+    document.getElementById("mType").textContent = "周末";
+    document.getElementById("mNote").textContent = "非公眾假期、補假日或豁免上班日期。";
+  } else {
+    const t = TYPE[entry.type];
+    const r = entry.record;
+    document.getElementById("mTitle").textContent = r.name;
+    document.getElementById("mDate").textContent = `${y}年${m}月${d}日 · ${wd}`;
+    document.getElementById("mType").innerHTML = `<span class="badge ${t.badge}">${t.label}</span>`;
+    let note = "";
+    if(entry.type === "f") note = r.mandatory ? "強制性假日（第 7/2008 號法律第四十四條）" : "非強制性公眾假期";
+    else if(entry.type === "c") note = "按《澳門公共行政工作人員通則》第七十九條第四款訂定之補假日";
+    else note = `行政長官批示，當日${r.session}獲豁免上班`;
+    document.getElementById("mNote").textContent = note;
+  }
+  mask.classList.add("show");
+}
+function closeModal(){ document.getElementById("modalMask").classList.remove("show"); }
+document.getElementById("mClose").addEventListener("click", closeModal);
+document.getElementById("modalMask").addEventListener("click", e => { if(e.target.id === "modalMask") closeModal(); });
+document.addEventListener("keydown", e => { if(e.key === "Escape") closeModal(); });
+
+/* ================= 切換 ================= */
+function renderAll(){
+  renderGrid();
+  renderList();
+  document.getElementById("srcLink").href = `https://www.gov.mo/zh-hant/public-holidays/year-${state.year}/`;
+}
+function switchMode(mode){
+  state.mode = mode;
+  document.getElementById("viewGrid").style.display = mode === "grid" ? "" : "none";
+  document.getElementById("viewList").style.display = mode === "list" ? "" : "none";
+  document.getElementById("modeGrid").classList.toggle("active", mode === "grid");
+  document.getElementById("modeList").classList.toggle("active", mode === "list");
+}
+document.getElementById("modeGrid").addEventListener("click", () => switchMode("grid"));
+document.getElementById("modeList").addEventListener("click", () => switchMode("list"));
+document.getElementById("yearSelect").addEventListener("change", e => { state.year = e.target.value; renderAll(); });
+
+renderAll();
+</script>
+</body>
+</html>
